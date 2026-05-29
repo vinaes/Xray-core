@@ -135,6 +135,9 @@ func UClient(c net.Conn, config *Config, ctx context.Context, dest net.Destinati
 		return nil, errors.New("REALITY: failed to get fingerprint").AtError()
 	}
 	uConn.UConn = utls.UClient(c, utlsConfig, *fingerprint)
+	if err := tls.ApplyCustomSpec(uConn.UConn); err != nil {
+		return nil, errors.New("REALITY: failed to apply custom spec: ", err)
+	}
 	{
 		uConn.BuildHandshakeState()
 		hello := uConn.HandshakeState.Hello

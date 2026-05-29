@@ -137,6 +137,7 @@ func (c *UConn) NegotiatedProtocol() string {
 
 func UClient(c net.Conn, config *tls.Config, fingerprint *utls.ClientHelloID) net.Conn {
 	utlsConn := utls.UClient(c, copyConfig(config), *fingerprint)
+	_ = ApplyCustomSpec(utlsConn)
 	return &UConn{UConn: utlsConn}
 }
 
